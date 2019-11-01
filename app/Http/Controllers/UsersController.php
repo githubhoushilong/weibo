@@ -15,7 +15,7 @@ class UsersController extends Controller
         return view('users.show',compact('user'));
     }
 
-    //数据验证
+    //数据处理
     public function store(Request $request){
         //开始验证
         $this->validate($request,[
@@ -23,6 +23,16 @@ class UsersController extends Controller
             'email' => 'required|email|unique:users|max:255',//邮箱必填，email格式，唯一，最长255
             'password' => 'required|confirmed|min:6'//密码必填，确认验证码，最短6
         ]);
-        return;
+
+        //数据入库
+        $user = User::create([
+            'name' => $request->name,
+            'email' =>$request->email,
+            'password' => bcrypt($request->password)
+        ]);
+
+        session()->flash('success','欢迎，您将在这里开启一段新的旅程');
+        //重定向页面，$user为User模型实例，参数[$user]自动获取主键id
+        return redirect()->route('users.show',[$user]);
     }
 }

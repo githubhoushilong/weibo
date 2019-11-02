@@ -36,4 +36,11 @@ class SessionController extends Controller
         return;
     }
 
+    //退出登录
+    public function destroy(){
+        //用户退出
+        Auth::logout();
+        session()->flash('success','您已成功退出');
+        return redirect('login');
+    }
 }

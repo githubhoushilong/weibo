@@ -20,7 +20,7 @@ class SessionController extends Controller
            'password' => 'required'
        ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials,$request->has('remember'))) {
             //登录成功后的相关操作
             //消息提示
             session()->flash('success','欢迎回来');

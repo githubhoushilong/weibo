@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Auth;
 class UsersController extends Controller
 {
     //用户登录
@@ -30,7 +31,7 @@ class UsersController extends Controller
             'email' =>$request->email,
             'password' => bcrypt($request->password)
         ]);
-
+        Auth::login($user);
         session()->flash('success','欢迎，您将在这里开启一段新的旅程');
         //重定向页面，$user为User模型实例，参数[$user]自动获取主键id
         return redirect()->route('users.show',[$user]);

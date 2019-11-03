@@ -36,4 +36,28 @@ class UsersController extends Controller
         //重定向页面，$user为User模型实例，参数[$user]自动获取主键id
         return redirect()->route('users.show',[$user]);
     }
+
+    //编辑用户
+    public function edit(User $user){
+        return view('users.edit',compact('user'));
+    }
+
+    //处理用户更新的提交
+    public function update(User $user,Request $request){
+        $this->validate($request,[
+            'name' => 'required|max:50',
+            'password' => 'nullable|confirmed|min:6'
+        ]);
+
+        $data = [];
+        $data['name'] = $request->name;
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
+        $user->update($data);
+
+        //闪存提示信息
+        session()->flash('success','个人资料更新成功！');
+        return redirect()->route('users.show',$user->id);
+    }
 }

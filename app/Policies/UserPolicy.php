@@ -14,4 +14,9 @@ class UserPolicy
     {
         return $currentUser->id === $user->id;
     }
+
+    //删除用户动作相关授权策略
+    public function destroy(Us $currentUser,User $user){
+        return $currentUser->is_admin && $currentUser->id !== $user->id;
+    }
 }

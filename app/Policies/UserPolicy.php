@@ -19,4 +19,9 @@ class UserPolicy
     public function destroy(Us $currentUser,User $user){
         return $currentUser->is_admin && $currentUser->id !== $user->id;
     }
+
+    //用户关注
+    public function follow(Us $currentUser,User $user){
+        return $currentUser->id !== $user->id;
+    }
 }
